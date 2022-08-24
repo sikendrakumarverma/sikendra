@@ -36,9 +36,9 @@ router.post("/createBook", BookController.createBook  )
 // }
 
 // // e.g. restricted and open-to-all API's can be handled like below now:
-// router.get('/homePage', mid1, UserController.feeds)
-// router.get('/profileDetails', mid1, UserController.profileDetails)
-// router.get('/friendList', mid1, UserController.friendList)
+// router.get('/showhomePage', mid1, UserController.feeds)
+// router.get('/showprofileDetails', mid1, UserController.profileDetails)
+// router.get('/showfriendList', mid1, UserController.friendList)
 // router.get('/changePassword', mid1, UserController.changePassword)
 
 // router.get('/termsAndConditions',  UserController.termsAndConditions)
