@@ -24,7 +24,7 @@ const createUser= async function (req, res) {
     console.log(req.headers["content-type"])
     console.log(tokenDataInHeaders)
     //Set a header in request
-    req.headers['month']='June' //req.headers.month = "June"
+    req.headers['month']='July' //req.headers.month = "July"
 
     //Set an attribute in request object
     req.anything = "everything"
