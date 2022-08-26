@@ -1,8 +1,5 @@
 const UserModel= require("../models/userModel")
 
-
-
-
 const basicCode= async function(req, res, next) {
     let tokenDataInHeaders= req.headers.token
     console.log(tokenDataInHeaders)
@@ -34,7 +31,9 @@ const createUser= async function (req, res) {
     
     //Set a header in response
     res.header('year','2022')
-    res.send({msg: "Hi"})
+    //res.send({msg: "data"})
+    let savedData= await UserModel.create(data)
+     res.send({msg: savedData})
 }
 
 const getUsersData= async function (req, res) {

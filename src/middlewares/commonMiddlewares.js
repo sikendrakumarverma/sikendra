@@ -1,7 +1,12 @@
 
 const mid1= function ( req, res, next) {
-    req.falana= "hi there. i am adding something new to the req object"
+    let isFreeAppUser=req.headers.isfreeappuser
     console.log("Hi I am a middleware named Mid1")
+
+    if(!isFreeAppUser) {
+        res.send("please add isFreeAppUser in headers key")
+    }
+    console.log("OK HEADERS KEY IS ATTACHED")
     next()
 }
 
