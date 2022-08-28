@@ -1,5 +1,8 @@
 const { count } = require("console")
 const orderModel = require("../models/orderModel")
+const userModel= require("../models/userModel")
+const productModel= require("../models/productModel")
+const moment=require('moment')
 
 const createOrder= async function (req, res) {
 
@@ -45,11 +48,46 @@ const createOrder= async function (req, res) {
         return res.send({status: false, msg: "product id is not valid"})
     }
     let savedData= await orderModel.create(data)
-    res.send({msg: savedData})
+    //res.send({msg: savedData})
+// FOR PURCHASE 
+    let HeaderKey=req.headers.isfreeappuser
+    if(HeaderKey=='true') {  //means header value is true
+        
+        let today=moment().format('YYYY.MM.DD');
+      req.body["amount"]=0  //amount=0
+     req.body["isFreeAppUser"]=HeaderKey
+     req.body["date"]=today
+     let newDATA= await orderModel.create(data);
+     res.send({msg: newDATA})
+    }
+   else if(HeaderKey=='false') {  //means header value is false
+    //   let user= await userModel.findById(userid)
+    //   let product= await productModel.findById(productid)
+    let productPrice=product.price
+    let userBalance=user.balance
+    console.log(userBalance,",",productPrice)
+   if(userBalance>=productPrice) {
+    console.log("Hi you are applicable for making order")
+    let userNewBalance=userBalance-productPrice
+    let userid=req.body.userid
+    let updatedUserBalance= await userModel.findOneAndUpdate({_id: userid},{$set:{balance:userNewBalance}})
+    console.log(updatedUserBalance)
+    let today=moment().format('YYYY.MM.DD');
+    req.body["amount"]= productPrice 
+     req.body["isFreeAppUser"]=HeaderKey
+     req.body["date"]=today
+     let newDATA= await orderModel.create(data);
+     res.send({msg: newDATA})
+   }
+    else{
+        return res.send({"msg":"your balance is not sufficiant for this product PLEASE TRY ANOTHER PRODUCT"})
+    }
+   }
+
 }
 
 module.exports.createOrder = createOrder
-module.exports.getBooksData = getBooksData
-module.exports.updateBooks = updateBooks
-module.exports.deleteBooks = deleteBooks
-module.exports.totalSalesPerAuthor = totalSalesPerAuthor
+// module.exports.getBooksData = getBooksData
+// module.exports.updateBooks = updateBooks
+// module.exports.deleteBooks = deleteBooks
+// module.exports.totalSalesPerAuthor = totalSalesPerAuthor
