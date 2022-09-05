@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Schema.Types.ObjectId;
+// const date = new Date();
 
 const createBlog = new mongoose.Schema({
     title : {
@@ -20,24 +21,24 @@ const createBlog = new mongoose.Schema({
     category : {
         type : String,
         required : true,
-        examples : {
-            type : []
-        }
     },
     subcategory :{
-        type : [],
-        examples : {
-            type : []
-        }
+        type : []
+    },
+    deletedAt : {
+        type : Date
     },
     isDeleted : {
         type : Boolean,
         default : false
     },
+    publishedAt :{
+        type : Date
+    },
     isPublished : {
         type : Boolean,
         default : false
-    }
+    },
 }, {timestamp : true});
 
 module.exports = mongoose.model('blog', createBlog);
