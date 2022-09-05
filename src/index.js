@@ -11,7 +11,6 @@ mongoose.connect('mongodb+srv://project-B:project1@project1-blogging.oe7lrmu.mon
              .catch((error) => console.log(error));
 
 app.use('/', route);
-
 app.listen(process.env.PORT || 2000, function(){
     console.log('Express is running on '+ (process.env.PORT || 2000));
 })
