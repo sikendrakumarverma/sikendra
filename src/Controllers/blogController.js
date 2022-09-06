@@ -1,4 +1,4 @@
-const { spread } = require("lodash");
+
 const { mongo } = require("mongoose");
 const authorModel = require("../Models/authorModel");
 const blogModel = require("../Models/blogModel");
@@ -50,11 +50,11 @@ const updateBlog = async function (req, res) {
       let getId = req.params.blogId
       let data = req.body  
       let checkId = await blogModel.findOne({ _id: getId })
-      console.log(checkId)
+       
       if (checkId) {
           if (checkId.deleted === false) {
-              let check = await blogModel.findByIdAndUpdate(getId, { $push: { tags: data.tags, subcategory: data.subcategory }, title: data.title, body: data.body}, { new: true })
-              res.status(200).send({ status: true, msg: check })
+              let check = await blogModel.findByIdAndUpdate(getId, { $push: { tags: data.tags, subcategory: data.subcategory }, title: data.title, body: data.body,published:true,publishedAt: Date.now()},{ new: true },)
+              res.status(200).send({ status: true, data: check })
           }
           else {
               res.status(404).send("CANT UPDATE , IT IS DELETED")
@@ -79,14 +79,14 @@ const deleteBlog = async function (req, res) {
   if (blog.deleted == false) {
       let save = await blogModel.findOneAndUpdate({ _id: blogId }, { $set: { deleted: true, deletedAt: Date.now() } }, { new: true })
 
-      return res.status(200).send();
+      return res.status(200).send({msg:"successfully deleted Blog"});
   } else {
       res.status(404).send({ status: false, msg: "already deleted" })
   }
 }
 
 const deletebyquery = async function (req, res) {
-  data = req.query
+ let  data = req.query
   
   console.log(data)
   let find = await blogModel.findOne(data)
