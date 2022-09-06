@@ -27,9 +27,9 @@ const createBlog = new mongoose.Schema({
     },
     deletedAt : {
         type : Date,
-        default : Date.now
+        default : null
     },
-    isDeleted : {
+    deleted : {
         type : Boolean,
         default : false
     },
@@ -37,10 +37,10 @@ const createBlog = new mongoose.Schema({
         type : Date,
         default : Date.now
     },
-    isPublished : {
+    published : {
         type : Boolean,
         default : false
     },
-}, {timestamp : true});
+}, {timestamps : true});
 
 module.exports = mongoose.model('blog', createBlog);
