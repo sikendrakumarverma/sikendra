@@ -13,6 +13,7 @@ router.post('/authors', authorController.createAuthor);
 router.post('/blogs', blogController.createBlog);
 
 router.get('/blogs', blogController.getBlog);
+// router.get('/blogss', blogController.getByAutherId);
 
 
 
