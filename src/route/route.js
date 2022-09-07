@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authorController = require('../Controllers/authorController');
 const blogController = require('../Controllers/blogController');
+const middleware=require('../middleware/mid')
 
 router.get('/test-me', (req, res) =>{
     console.log('I am running');
@@ -10,15 +11,17 @@ router.get('/test-me', (req, res) =>{
 
 router.post('/authors', authorController.createAuthor);
 
-router.post('/blogs', blogController.createBlog);
+router.post('/blogs',middleware.authentication, blogController.createBlog);
 
-router.get('/blogs', blogController.getBlog);
+router.get('/blogs',middleware.authentication,middleware.Authorise, blogController.getBlog);
 
-router.put('/blogs/:blogId', blogController.updateBlog);
+router.put('/blogs/:blogId',middleware.authentication,middleware.Authorise, blogController.updateBlog);
 
-router.delete('/blogs/:blogId', blogController.deleteBlog);
+router.delete('/blogs/:blogId',middleware.authentication, blogController.deleteBlog);
 
-router.delete('/blogs', blogController.deletebyquery);
+router.delete('/blogs',middleware.authentication, blogController.deletebyquery);
+
+router.post('/login',authorController.authorLogin)
 
 
 

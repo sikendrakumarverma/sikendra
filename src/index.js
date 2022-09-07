@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
 
 mongoose.connect('mongodb+srv://project-B:project1@project1-blogging.oe7lrmu.mongodb.net/Blogging-P1').then(() => console.log('MongoDB is connected'))
              .catch((error) => console.log(error));

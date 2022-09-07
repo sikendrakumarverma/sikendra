@@ -1,4 +1,5 @@
 const authorModel = require("../Models/authorModel");
+const jwt=require('jsonwebtoken')
 
 const createAuthor = async function (req, res) {
 try{
@@ -56,7 +57,7 @@ const authorLogin = async function (req, res) {
     return res.status(400).send({status : false, msg : 'Please enter valid email or password'})
   }
   let token = jwt.sign({
-    id : login._id, 
+    id : login._id.toString(), 
     project: 'project-1'}, 
         "secretKey"
     )
