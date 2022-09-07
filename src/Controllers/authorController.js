@@ -17,19 +17,19 @@ try{
 //   ..................................................................
 
 // ************************* email validation(start) **************************************
-  if (!data.emailId) {
+  if (!data.email) {
     return res.status(400).send("Please enter email Id");
   } // email is required if not pass msg
 //   .....................................................................
 
   let regex = /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/;
-  if (!data.emailId.match(regex)) {
+  if (!data.email.match(regex)) {
     return res.status(400).send("Email Id is invalid");
   } // if id is not matching with regex
 
 //   .......................................................................
 
-  let isEmail = await authorModel.find({ emailId: data.emailId });
+  let isEmail = await authorModel.find({ email: data.email });
   if (isEmail) {
     return res.status(400).send("This email Id is already exists");
   } // if id is already present
@@ -42,8 +42,8 @@ if (!data.password) {
 
   const newAuthor = await authorModel.create(data);
   res.status(201).send({ status: true, data: newAuthor })
-}catch(e){
-    return res.send({msg : e});
+}catch(err){
+    return res.status(500).send({msg : err});
 }
 }
 
