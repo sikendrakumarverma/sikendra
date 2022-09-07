@@ -26,7 +26,7 @@ const getBlog = async function (req, res) {
       let array = Object.keys(keys).length
 
       if (!array) {
-          let result = await blogModel.find({ isDeleted: false, isPublished: true })
+          let result = await blogModel.find({ deleted: false,published: true })
           return res.status(200).send({ status: true, data: result })
       }
        if(authId){
@@ -35,7 +35,7 @@ const getBlog = async function (req, res) {
           return res.status(400).send({ status: false, msg: "Author Id Invalid" });
       }}
 
-      let fetchBlogs = await blogModel.find({ $and: [keys, { isDeleted: false, isPublished: true }] })
+      let fetchBlogs = await blogModel.find({ $and: [keys, { deleted: false, published: true }] })
       let variable = fetchBlogs.length //0
       if (variable == 0) { // 0 == 0
           return res.status(404).send({ status: false, msg: "Blog is not found" })
