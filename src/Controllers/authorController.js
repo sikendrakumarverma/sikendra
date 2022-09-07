@@ -47,5 +47,23 @@ if (!data.password) {
 }
 }
 
+const authorLogin = async function (req, res) {
+  let data = req.body;
+  let userName = data.email;
+  let password = data.password;
+  let login = await authorModel.findOne({email : userName, password : password}).select({_id : 1})
+  if(!login){
+    return res.status(400).send({status : false, msg : 'Please enter valid email or password'})
+  }
+  let token = jwt.sign({
+    id : login._id, 
+    project: 'project-1'}, 
+        "secretKey"
+    )
+  res.setHeader("x-api-key", token)
+  res.status(201).send({status : true, data : token}) 
+};
+
 
 module.exports.createAuthor = createAuthor;
+module.exports.authorLogin = authorLogin;
