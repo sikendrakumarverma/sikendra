@@ -92,7 +92,9 @@ const deletebyquery = async function (req, res) {
   let find = await blogModel.findOne(data)
   console.log(find)
   if (!find) { return res.status(404).send({ status: false, msg: "Blog is not created" }) }
+
   if(find.deleted==true){return res.status(400).send({status:false,msg:"THIS DOCUMENT Is deleted"})}
+  
   let saved = await blogModel.findOneAndUpdate( data ,{ $set: { isDeleted: true, deletedAt: Date.now() } }, { new: true })
   res.status(200).send({ status: true, msg: saved })
 
