@@ -1,19 +1,32 @@
 const authorModel = require("../Models/authorModel");
-const jwt=require('jsonwebtoken')
+const jwt=require('jsonwebtoken');
+const { concat } = require("mongoose/lib/helpers/query/validOps");
 
 const createAuthor = async function (req, res) {
 try{
   const data = req.body;
+  
   if (!data.fname) {
     return res.status(400).send("Please enter first name");
+  }
+  let nameregex =/^[A-Za-z]+$/
+  if(!data.fname.match(nameregex)){
+    return res.status(400).send({status:false , msg:"Fname should be in alphabate"})
   }
 //   ........................................................
   if (!data.lname) {
     return res.status(400).send("Please enter last name");
   }
+  if(!data.lname.match(nameregex)){
+    return res.status(400).send({status:false , msg:"lname should be in alphabate"})
+  }
 //   ...............................................................
   if (!data.title) {
     return res.status(400).send("Please enter the title");
+  }
+  let titleRegex=/^(Miss|Mr|Mrs)$/
+  if(!data.title.match(titleRegex)){
+    return res.status(400).send({status:false , msg:"Title should be in between'Mr', 'Mrs', 'Miss'"})
   }
 //   ..................................................................
 
@@ -23,35 +36,49 @@ try{
   } // email is required if not pass msg
 //   .....................................................................
 
-  let regex = /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/;
+  let regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   if (!data.email.match(regex)) {
     return res.status(400).send("Email Id is invalid");
   } // if id is not matching with regex
 
 //   .......................................................................
 
-  let isEmail = await authorModel.find({ email: data.email });
-  if (isEmail) {
+  let isEmail = await authorModel.findOne({ email: data.email });
+  console.log(isEmail)
+  if (isEmail)
+  {
     return res.status(400).send("This email Id is already exists");
   } // if id is already present
 
 //   *************************** email validation (end) *****************************
 //   ..........................................................................
+let passwordRegex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 if (!data.password) {
     return res.status(400).send("Please enter password");
+  }
+  if(!data.password.match(passwordRegex)){
+    return res.status(400).send({status:false , msg:" Minimum eight characters, at least one uppercase letter, one lowercase letter and one number"})
   }
 
   const newAuthor = await authorModel.create(data);
   res.status(201).send({ status: true, data: newAuthor })
 }catch(err){
-    return res.status(500).send({msg : err});
+    return res.status(500).send({msg : err.message});
 }
 }
 
 const authorLogin = async function (req, res) {
   let data = req.body;
+  let array =Object.keys(data).length
+
+  if(!array) return res.status(400).send({status:false, msg:"Please enter Email & password"})
   let userName = data.email;
+
+  if(!userName) return res.status(400).send({status:false, msg:"please Enter Email"})
   let password = data.password;
+
+  if(!password) return res.status(400).send({status:false, msg:"please Enter Password"})
+  
   let login = await authorModel.findOne({email : userName, password : password}).select({_id : 1})
   if(!login){
     return res.status(400).send({status : false, msg : 'Please enter valid email or password'})
