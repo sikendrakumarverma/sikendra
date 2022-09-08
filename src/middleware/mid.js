@@ -10,7 +10,7 @@ const authentication = async function (req, res, next) {
 
         let decodedToken = jwt.verify(token, "secretKey")
         console.log(decodedToken)
-        req.Tokan=decodedToken
+        req.Tokan = decodedToken
         if (!decodedToken)
             return res.status(401).send({ status: false, msg: "token is invalid" });
 
@@ -30,11 +30,14 @@ const authentication = async function (req, res, next) {
 const Authorise = async function (req, res, next) {
     try {
         // console.log(req.Tokan)
-        let id=req.Tokan.id
+        let id = req.Tokan.id
+
         let blogId = req.params.blogId;
+        let blogId1 = req.query;
 
+
+        if(blogId){
         let blog = await blogModel.findById(blogId);
-
         if (!blog) {
             return res.status(404).send("No such blog exists");
         }
@@ -42,6 +45,24 @@ const Authorise = async function (req, res, next) {
         if (blog.authorId != id) {
             return res.status(403).send({ status: false, msg: 'User logged is not allowed to modify the requested users data because it is another user data' })
         }
+        // next()
+      }
+      else if(blogId1){
+        let blog2 = await blogModel.find(blogId1).select({authorId:1,_id:0});
+        console.log(blog2)
+         
+        if (blog2.length==0) {
+            return res.status(404).send("No such blog exists");
+        }
+
+        if (element!= id) {
+            return res.status(403).send({ status: false, msg: 'User logged is not allowed to modify the requested users data because it is another user data' })
+        }
+      }
+
+
+        //    let blog1 =await blogModel.find(query)
+        // 
         next()
 
     }

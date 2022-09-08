@@ -17,9 +17,9 @@ router.get('/blogs',middleware.authentication,middleware.Authorise, blogControll
 
 router.put('/blogs/:blogId',middleware.authentication,middleware.Authorise, blogController.updateBlog);
 
-router.delete('/blogs/:blogId',middleware.authentication, blogController.deleteBlog);
+router.delete('/blogs/:blogId',middleware.authentication,middleware.Authorise, blogController.deleteBlog);
 
-router.delete('/blogs',middleware.authentication, blogController.deletebyquery);
+router.delete('/blogs',middleware.authentication,middleware.Authorise, blogController.deletebyquery);
 
 router.post('/login',authorController.authorLogin)
 

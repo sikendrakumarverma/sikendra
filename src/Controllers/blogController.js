@@ -53,7 +53,7 @@ const updateBlog = async function (req, res) {
        
       if (checkId) {
           if (checkId.deleted === false) {
-              let check = await blogModel.findByIdAndUpdate(getId, { $push: { tags: data.tags, subcategory: data.subcategory }, title: data.title, body: data.body,published:true,publishedAt: Date.now()},{ new: true },)
+              let check = await blogModel.findByIdAndUpdate(getId, { $push: { tags: data.tags, subcategory: data.subcategory },title: data.title, body: data.body,published:true,publishedAt: Date.now()},{ new: true })
               res.status(200).send({ status: true, data: check })
           }
           else {
@@ -95,8 +95,27 @@ const deletebyquery = async function (req, res) {
 
   if(find.deleted==true){return res.status(400).send({status:false,msg:"THIS DOCUMENT Is deleted"})}
   
-  let saved = await blogModel.findOneAndUpdate( data ,{ $set: { isDeleted: true, deletedAt: Date.now() } }, { new: true })
+  let saved = await blogModel.findOneAndUpdate( data ,{ $set: { deleted: true, deletedAt: Date.now() } }, { new: true })
   res.status(200).send({ status: true, msg: saved })
+
+//   const filterQuery = {isDeleted: false}
+// if(isValid(category)) {
+// filterQuery['category'] = category.trim()
+// }
+
+// if(isValid(isPublished)) {
+// filterQuery['isPublished'] = isPublished
+// }
+// if(isValid(tags)) {const tagsArr = tags.trim().split(',').map(tag => tag.trim());
+// filterQuery['tags'] = {$all: tagsArr}
+//  }
+        
+// if(isValid(subcategory)) {
+//             const subcatArr = subcategory.trim().split(',').map(subcat => subcat.trim());
+//             filterQuery['subcategory'] = {$all: subcatArr}
+//         }
+
+//         const blogs = await blogModel.find(filterQuery);
 
 }
 
