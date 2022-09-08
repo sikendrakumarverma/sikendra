@@ -6,6 +6,7 @@ const authentication = async function (req, res, next) {
     try {
         let token = req.headers['x-api-key'];
         if (!token) return res.status(400).send("Tokan is Required")
+
         //___________________________Authintication Check __________________________________________
 
         let decodedToken = jwt.verify(token, "secretKey")
@@ -21,6 +22,8 @@ const authentication = async function (req, res, next) {
     }
 
 }
+//________________Authorisation___________________________________________________________________________
+
 const Authorise = async function (req, res, next) {
     try {
         // console.log(req.Tokan)
