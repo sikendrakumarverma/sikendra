@@ -6,7 +6,8 @@ const app = express();
 
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb+srv://project-B:project1@project1-blogging.oe7lrmu.mongodb.net/Blogging-P1').then(() => console.log('MongoDB is connected'))
+mongoose.connect('mongodb+srv://project-B:project1@project1-blogging.oe7lrmu.mongodb.net/Blogging-P1')
+    .then(() => console.log('MongoDB is connected'))
     .catch((error) => console.log(error));
 
 app.use('/', route);

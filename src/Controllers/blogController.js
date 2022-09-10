@@ -5,14 +5,23 @@ const blogModel = require("../Models/blogModel");
 const createBlog = async function (req, res) {
   try {
     const data = req.body;
-    let array = Object.keys(data).length
-    if (!array) return res.status(400).send({ status: false, msg: "Please Enter Blog Information" })
-
+    // const{authId,}
     let id = req.Tokan.id
-    if (!data.authId) {
-      return res.status(400).send("Please enter author Id");
+    let body = Object.keys(data).length
+
+    if (!body)
+      return res.status(400).send({ status: false, msg: "Please Enter Blog Information" })
+    //______________________________authorid present/validataion________________________________________________________________________________________
+
+    if (!data.authorId) {
+      return res.status(400).send({ status: false, msg: "Please enter author Id" });
     }
-    //____________Authorization(extra)________________________________________________________________________________________
+
+    let objectIdRegex = /^[a-f\d]{24}$/
+    if (!data.authorId.match(objectIdRegex))
+      return res.status(400).send({ status: false, msg: "authorId (ObjectId) Must be 24 byte" })
+
+    //__________________________Authorization(extra)________________________________________________________________________________________
 
     if (id != data.authorId) return res.status(403).send({ status: false, msg: "Login User Not authorised for blog create" })
 
@@ -26,14 +35,16 @@ const createBlog = async function (req, res) {
       return res.status(400).send("Please enter title");
     }
     let titleRegex = /^[a-zA-Z][-_][0-9]+$/
-    if (!data.title.match(titleRegex)) return res.status(400).send({ status: false, msg: "title should be first numeric then number(ex- part1)" })
+    if (!data.title.match(titleRegex))
+      return res.status(400).send({ status: false, msg: "title should be first numeric then number(ex- part1)" })
     //____________________________________________________________________________________________________________________________
 
     if (!data.body) {
       return res.status(400).send("Please enter body");
     }
     let bodyRegex = /^[a-zA-Z]+$/
-    if (!data.body.match(bodyRegex)) return res.status(400).send({ status: false, msg: "body should be alphabetic" })
+    if (!data.body.match(bodyRegex))
+      return res.status(400).send({ status: false, msg: "body should be alphabetic" })
     //____________________________________________________________________________________________________________________________
 
     if (!data.tags) {
@@ -42,10 +53,12 @@ const createBlog = async function (req, res) {
     //_____________________________________________________________________________________________________________________
 
     let categoryRegex = /^[A-Za-z]+$/
-    if (!data.category.match(categoryRegex)) return res.send.status(400).send({ status: false, msg: "Category must be in alphabet" })
+    if (!data.category.match(categoryRegex))
+      return res.send.status(400).send({ status: false, msg: "Category must be in alphabet" })
 
     let subcategoryRegex = /^[A-Za-z]+$/
-    if (!data.subcategory.match(subcategoryRegex)) return res.send.status(400).send({ status: false, msg: "SubCategory must be in alphabet" })
+    if (!data.subcategory.match(subcategoryRegex))
+      return res.send.status(400).send({ status: false, msg: "SubCategory must be in alphabet" })
     //_________________________________________________________________________________________________________________________
 
     const newBlog = await blogModel.create(data);
@@ -71,9 +84,18 @@ const getBlog = async function (req, res) {
       return res.status(200).send({ status: true, data: result })
     }
     if (authId) {
+       
+
+        let objectIdRegex = /^[a-f\d]{24}$/
+        if (!authId.match(objectIdRegex)){
+          return res.status(400).send({ status: false, msg: "authorId (ObjectId) Must be 24 byte" })
+        }
+      
+
       let authorId1 = await authorModel.findById(authId);
+
       if (!authorId1) {
-        return res.status(400).send({ status: false, msg: "Author Id Invalid" });
+        return res.status(400).send({ status: false, msg: "This AuthorId is not Author Id" });
       }
     }
 
@@ -90,7 +112,7 @@ const getBlog = async function (req, res) {
   }
 };
 
-//________________Update Blogs_____________________________________________________________________________________
+//________________Update By BlogID_____________________________________________________________________________________
 
 const updateBlog = async function (req, res) {
   try {
@@ -100,7 +122,7 @@ const updateBlog = async function (req, res) {
 
     if (checkId) {
       if (checkId.deleted === false) {
-        let check = await blogModel.findByIdAndUpdate(getId, { $push: { tags: data.tags, subcategory: data.subcategory }, title: data.title, body: data.body, published: true, publishedAt: Date.now() }, { new: true })
+        let check = await blogModel.findByIdAndUpdate(getId, { $push: { tags: data.tags, subcategory: data.subcategory },title: data.title, body: data.body, published: true, publishedAt: Date.now()}, { new: true })
         res.status(200).send({ status: true, data: check })
       }
       else {
@@ -115,7 +137,7 @@ const updateBlog = async function (req, res) {
     res.status(500).send(error.message)
   }
 }
-//__________________________Delete Blog______________________________________________________________________________
+//__________________________Delete By BlogID______________________________________________________________________________
 
 const deleteBlog = async function (req, res) {
   try {
@@ -140,18 +162,13 @@ const deleteBlog = async function (req, res) {
 
 //_______________________Delete By Query_____________________________________________________________________________
 
-const deletebyquery = async function (req, res) {
+const deleteByQuery = async function (req, res) {
   try {
-    let data = req.query
-    let authid = data.authorId
-    let find = await blogModel.find({ authorId: authid })
+    let data = req.obj
 
-    if (find.lenght == 0) { return res.status(404).send({ status: false, msg: "Blog is not Present" }) }
-
-    // if (find.deleted == true) { return res.status(400).send({ status: false, msg: "THIS DOCUMENT Is deleted" }) }
-
-    let saved = await blogModel.updateMany({ $and: [data, { authorId: authid }, { deleted: false }] }, { $set: { deleted: true, deletedAt: Date.now() } }, { new: true })
-    res.status(200).send({ status: true, msg: saved })
+    let saved = await blogModel.updateMany({ $and: [data, { deleted: false }] }, { $set: { deleted: true, deletedAt: Date.now() } }, { new: true })
+    console.log(saved)
+    res.status(200).send({ status: true, msg: "Successfully Deleted" })
   }
   catch (error) {
     console.log(error.message)
@@ -163,5 +180,5 @@ module.exports.createBlog = createBlog;
 module.exports.getBlog = getBlog;
 module.exports.updateBlog = updateBlog;
 module.exports.deleteBlog = deleteBlog;
-module.exports.deletebyquery = deletebyquery;
+module.exports.deleteByQuery = deleteByQuery;
 

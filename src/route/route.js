@@ -19,7 +19,7 @@ router.put('/blogs/:blogId', middleware.authentication, middleware.Authorise, bl
 
 router.delete('/blogs/:blogId', middleware.authentication, middleware.Authorise, blogController.deleteBlog);
 
-router.delete('/blogs', middleware.authentication, middleware.Authorise, blogController.deletebyquery);
+router.delete('/blogs', middleware.authentication, middleware.deleteByQuery, blogController.deleteByQuery);
 
 router.post('/login', authorController.authorLogin)
 
