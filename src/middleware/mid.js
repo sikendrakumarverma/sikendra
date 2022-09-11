@@ -99,12 +99,12 @@ const deleteByQuery = async function (req, res, next) {
         if (subcategory) { obj.subcategory = req.query.subcategory }
         if (published) { obj.published = req.query.published }
 
-        let result = await blogModel.find({ $and: [obj, { deleted: false }] })
+        let result = await blogModel.find(obj)   //{ $and: [obj, { deleted: false }] }
 
         if (result.length == 0)
             return res.status(404).send({ status: false, msg: "NO DATA FOUND" })
 
-        req.obj = obj
+        req.obj = obj  
         next()
     }
     catch (error) {
