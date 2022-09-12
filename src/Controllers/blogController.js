@@ -34,31 +34,36 @@ const createBlog = async function (req, res) {
     if (!title) {
       return res.status(400).send("Please enter title");
     }
-    let titleRegex = /^[a-zA-Z][-_][0-9]+$/
-    if (!title.match(titleRegex))
-      return res.status(400).send({ status: false, msg: "title should be first numeric then number(ex- part1)" })
+    // let titleRegex = /^[A-Za-z]+$/
+    // if (!title.match(titleRegex))
+    //   return res.status(400).send({ status: false, msg: "title should be first numeric then number(ex- part1)" })
     //____________________________________________________________________________________________________________________________
 
     if (!body) {
       return res.status(400).send("Please enter body");
     }
-    let bodyRegex = /^[a-zA-Z]+$/
-    if (!body.match(bodyRegex))
-      return res.status(400).send({ status: false, msg: "body should be alphabetic" })
+    // let bodyRegex =/^[A-Za-z]+$/
+    // if (!body.match(bodyRegex))
+    //   return res.status(400).send({ status: false, msg: "body should be alphabetic" })
     //____________________________________________________________________________________________________________________________
 
     if (!tags) {
       return res.status(400).send("Please enter tags");
     }
+
+
+    if(!category){
+      return res.status(400).send({status:false, data:"Category is mandretary"})
+    }
     //_____________________________________________________________________________________________________________________
 
     let categoryRegex = /^[A-Za-z]+$/
     if (!category.match(categoryRegex))
-      return res.send.status(400).send({ status: false, msg: "Category must be in alphabet" })
+      return res.status(400).send({ status: false, msg: "Category must be in alphabet" })
 
     let subcategoryRegex = /^[A-Za-z]+$/
     if (!subcategory.match(subcategoryRegex))
-      return res.send.status(400).send({ status: false, msg: "SubCategory must be in alphabet" })
+      return res.status(400).send({ status: false, msg: "SubCategory must be in alphabet" })
     //_________________________________________________________________________________________________________________________
 
     const newBlog = await blogModel.create(data);
