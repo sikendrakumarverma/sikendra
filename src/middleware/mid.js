@@ -16,8 +16,8 @@ const authentication = async function (req, res, next) {
         console.log(decodedToken)
 
         req.Tokan = decodedToken
-        // if (!decodedToken)
-        //     return res.status(401).send({ status: false, msg: "token is invalid" })
+        //  if (!decodedToken)
+            //  return res.status(401).send({ status: false, msg: "token is invalid" })
         next()
     }
     catch (err) {

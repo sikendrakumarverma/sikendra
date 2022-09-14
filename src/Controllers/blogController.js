@@ -6,7 +6,7 @@ const createBlog = async function (req, res) {
   try {
     const data = req.body;
     const{authorId,title,body,tags,subcategory,category}=data
-    let id = req.Tokan.id
+     let id = req.Tokan.id
     let bodyJson = Object.keys(data).length
 
     if (!bodyJson)
@@ -23,7 +23,7 @@ const createBlog = async function (req, res) {
 
     //__________________________Authorization(extra)________________________________________________________________________________________
 
-    if (id != authorId) return res.status(403).send({ status: false, msg: "Login User Not authorised for blog create" })
+     if (id != authorId) return res.status(403).send({ status: false, msg: "Login User Not authorised for blog create" })
 
     let authorId1 = await authorModel.findById(data.authorId);
     if (!authorId1) {
@@ -57,19 +57,19 @@ const createBlog = async function (req, res) {
     }
     //_____________________________________________________________________________________________________________________
 
-    let categoryRegex = /^[A-Za-z]+$/
-    if (!category.match(categoryRegex))
-      return res.status(400).send({ status: false, msg: "Category must be in alphabet" })
+    // let categoryRegex = /^[A-Za-z]+$/
+    // if (!category.match(categoryRegex))
+    //   return res.status(400).send({ status: false, msg: "Category must be in alphabet" })
 
-    let subcategoryRegex = /^[A-Za-z]+$/
-    if (!subcategory.match(subcategoryRegex))
-      return res.status(400).send({ status: false, msg: "SubCategory must be in alphabet" })
+    // let subcategoryRegex = /^[A-Za-z]+$/
+    // if (!subcategory.match(subcategoryRegex))
+    //   return res.status(400).send({ status: false, msg: "SubCategory must be in alphabet" })
     //_________________________________________________________________________________________________________________________
 
     const newBlog = await blogModel.create(data);
     res.status(201).send({ status: true, data: newBlog });
-  } catch (err) {
-    res.status(500).send({ msg: err.msg });
+  } catch (error) {
+    res.status(500).send({ msg: error.msg });
   }
 };
 

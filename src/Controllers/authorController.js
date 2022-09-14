@@ -55,7 +55,7 @@ const createAuthor = async function (req, res) {
       return res.status(400).send("Please enter password");
     }
     if (!data.password.match(passwordRegex)) {
-      return res.status(400).send({ status: false, msg: " Minimum eight characters, at least one uppercase letter, one lowercase letter and one number" })
+      return res.status(400).send({ status: false, msg: "Password should be Minimum eight characters, at least one uppercase letter, one lowercase letter and one number" })
     }
 
     const newAuthor = await authorModel.create(data);
