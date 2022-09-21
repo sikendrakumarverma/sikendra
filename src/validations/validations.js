@@ -21,7 +21,7 @@ const isValidTitle = function (title) {
 }
 
 const isValidMobile = function (mobile) {
-    var re = /^((\+91)?|91)?[6789][0-9]{9}$/;
+    var re = /^((\+91)?|91)?[6-9][0-9]{9}$/;
     return re.test(mobile);
 }
 

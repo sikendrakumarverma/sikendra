@@ -1,4 +1,3 @@
-
 # Plutonium
 
 ## Project - Books Management
@@ -152,7 +151,6 @@ Refer below sample
   status: true,
   message: 'Success',
   data: {
-
   }
 }
 ```
