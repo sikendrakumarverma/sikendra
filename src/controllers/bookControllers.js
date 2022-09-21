@@ -1,6 +1,7 @@
 const { findById, findOne } = require("../models/bookModels");
 const bookModels = require("../models/bookModels");
 const userModels = require("../models/userModels");
+const reviewModels=require("../models/reviewModels")
 const { isPresent, isValidObjectId, isValidISBN, isValidDate } = require("../validations/validations");
 
 
@@ -57,4 +58,22 @@ const createBooks = async function(req,res){
     }
 }
 
-module.exports = {createBooks}
+const getBookById= async function (req, res) {
+    try {
+        let data = req.params
+        let bookId = data.bookId
+        if (!data) return res.status(400).send({ status: false, message: "please provide book id in params" })
+        let bookData = await bookModels.findOne({ _id: bookId, isDeleted: false })
+        if (!bookData) return res.status(404).send({ status: false, message: "No data found" })
+        let findData= await reviewModels.find({bookId:bookData._id,isDeleted:false}).select({_id:1,bookId: 1,reviewedBy: 1,reviewedAt:1,rating: 1,review:1})
+        let revieData= {_id:bookData._id,title:bookData.title,excerpt:bookData.excerpt,userId:bookData.userId,category:bookData.category,subcategory:bookData.subcategory,isDeleted:bookData.isDeleted,reviews:bookData.reviews,releasedAt:bookData.releasedAt,createdAt:bookData.createdAt,updatedAt:bookData.updatedAt,reviewData:findData}
+        
+        return res.status(200).send({ status: true, message: "books list", data:revieData })
+
+    } catch (error) {
+        res.status(500).send({ status: false, message: error.message })
+    }
+}
+
+
+module.exports = {createBooks,getBookById}
