@@ -109,7 +109,7 @@ const updateBook = async function (req, res) {
         if (!isValidObjectId(bookId)) return res.status(400).send({ status: false, message: "bookId is not Correct" })
         let id = await bookModels.findById(bookId)
         if (!id) return res.status(404).send({ status: false, message: "book not found" })
-        if (id.isDeleted == true) return res.status(404).send({ status: false, message: "book is already deleted, you can't update" })
+        if (id.isDeleted == true) return res.status(400).send({ status: false, message: "book is already deleted, you can't update" })
 
         let { title, excerpt, releasedAt, ISBN } = req.body;
         if (Object.entries(req.body).length == 0) {
@@ -140,9 +140,28 @@ const updateBook = async function (req, res) {
         return res.status(200).send({ status: true, message: "Success", data: update });
 
     } catch (error) {
+        return res.status(500).send({ status: false, message: error.message })
+    }
+}
 
+const deleteBookById = async function (req, res) {
+    try {
+        let bookId = req.params.bookId
+        if (!bookId) return res.status(400).send({ status: false, message: "please provide book id in params" })
+        if (!isValidObjectId(bookId)) return res.status(400).send({ status: false, msg: "bookId is incorrect" })
+
+        let bookData = await bookModels.findById(bookId)
+        if (!bookData) return res.status(404).send({ status: false, message: "No data found" })
+        if (bookData.isDeleted == false) {
+            await bookModels.findOneAndUpdate({ _id: bookId }, { $set: { isDeleted: true, deletedAt: Date() } }, { new: true })
+        } else {
+            return res.status(400).send({ status: false, msg: "Given Id Book data is already deleted" })
+        }
+        return res.status(200).send({ status: true, message: " Data is successfully deleted" })
+    } catch (error) {
+        return res.status(500).send({ status: false, message: error.message })
     }
 }
 
 
-module.exports = { createBooks, getBooks, getBookById, updateBook }
+module.exports = {  createBooks, getBooks,  getBookById, updateBook , deleteBookById }

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { createUsers, login } = require("../controllers/userControllers");
-const { createBooks, getBooks,getBookById, updateBook } = require("../controllers/bookControllers");
+const { createBooks, getBooks,getBookById, updateBook,deleteBookById } = require("../controllers/bookControllers");
 const { authenticate } = require("../middlewares/auth");
 
 router.post("/register",createUsers);
@@ -12,5 +12,6 @@ router.post("/books", createBooks)
 router.get("/books", getBooks)
 router.get("/books/:bookId",getBookById)
 router.put("/books/:bookId", updateBook)
+router.delete("/books/:bookId",deleteBookById)
 
 module.exports = router
