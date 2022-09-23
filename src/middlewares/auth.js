@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bookModels = require("../models/bookModels");
-const { isValidObjectId } = require("./validations");
+const isValidObjectId = require("./validations");
 
 
 const authenticate = function (req, res, next) {
