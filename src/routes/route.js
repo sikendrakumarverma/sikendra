@@ -3,15 +3,14 @@ const router = express.Router();
 
 const { createUsers, login } = require("../controllers/userControllers");
 const { createBooks, getBooks,getBookById, updateBook,deleteBookById } = require("../controllers/bookControllers");
-const { authenticate } = require("../middlewares/auth");
+const { authenticate, authorize } = require("../middlewares/auth");
 
 router.post("/register",createUsers);
 router.post("/login",login)
-router.get("/auth",authenticate)
-router.post("/books", createBooks)
-router.get("/books", getBooks)
-router.get("/books/:bookId",getBookById)
-router.put("/books/:bookId", updateBook)
-router.delete("/books/:bookId",deleteBookById)
+router.post("/books", authenticate, createBooks)
+router.get("/books", authenticate, getBooks)
+router.get("/books/:bookId",authenticate, authorize, getBookById)
+router.put("/books/:bookId",authenticate, authorize, updateBook)
+router.delete("/books/:bookId",authenticate, authorize, deleteBookById)
 
 module.exports = router

@@ -20,9 +20,9 @@ const isValidTitle = function (title) {
     return ["Mr", "Mrs", "Miss"].indexOf(title) !== -1
 }
 
-const isValidMobile = function (mobile) {
+const isValidPhone = function (phone) {
     var re = /^((\+91)?|91)?[6-9][0-9]{9}$/;
-    return re.test(mobile);
+    return re.test(phone);
 }
 
 const isValidEmail = function (email) {
@@ -54,16 +54,18 @@ const isValidRating = function isInteger(value) {
     return value % 1 == 0;
 }
 
+
+
 module.exports = {
     isValidName,
     isValidString,
     isValidTitle,
-    isValidMobile,
+    isValidPhone,
     isValidISBN,
     isValidEmail,
     isValidPassword,
     isValidObjectId,
     isPresent,
     isValidDate,
-    isValidRating
+    isValidRating,
 }
