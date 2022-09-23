@@ -106,7 +106,7 @@ const getBookById = async function (req, res) {
 const updateBook = async function (req, res) {
     try {
         let bookId = req.params.bookId;
-        if (!bookId) return res.status(400).send({ status: false, message: "Please enter bookID" })
+        if (!bookId) return res.status(400).send({ status: false, message: "Please enter bookId in params" })
         if (!isValidObjectId(bookId)) return res.status(400).send({ status: false, message: "bookId is not Correct" })
         let id = await bookModels.findById(bookId)
         if (!id) return res.status(404).send({ status: false, message: "book not found" })
