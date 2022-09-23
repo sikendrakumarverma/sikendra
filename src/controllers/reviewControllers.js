@@ -1,14 +1,13 @@
+<<<<<<< HEAD
 const { isValidObjectId, isPresent, isValidRating, isValidName } = require("../middlewares/validations");
 const reviewModels = require("../models/reviewModels")
+=======
 
-const createReview = async function (req, res) {
-    try {
+>>>>>>> 8ae1cec (createReview validation not proper work)
 
-    } catch (err) {
-        return res.status(500).send({ status: false, message: err.message });
-    }
-}
 
+
+<<<<<<< HEAD
 const updateReview = async function (req, res) {
     try {
         let reviewId = req.params.reviewId
@@ -88,3 +87,6 @@ const deleteReview = async function (req, res) {
 }
 
 module.exports = { createReview, updateReview ,deleteReview}
+=======
+module.exports={createReview}
+>>>>>>> 8ae1cec (createReview validation not proper work)
