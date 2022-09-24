@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 
 const { createUsers, login } = require("../controllers/userControllers");
-const { createReview} = require("../controllers/reviewControllers");
 const { createBooks, getBooks, getBookById, updateBook, deleteBookById } = require("../controllers/bookControllers");
 const { authenticate, authorize } = require("../middlewares/auth");
 const { createReview, updateReview, deleteReview } = require("../controllers/reviewControllers");
@@ -24,6 +23,6 @@ router.post("/books/:bookId/review",  createReview)
 router.put("/books/:bookId/review/:reviewId",  updateReview)
 router.put("/books/:bookId/review/:reviewId",  deleteReview)
 
-router.post("/books/:bookId/review",createReview)
+
 
 module.exports = router

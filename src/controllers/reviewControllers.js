@@ -1,13 +1,13 @@
-<<<<<<< HEAD
+ 
 const { isValidObjectId, isPresent, isValidRating, isValidName } = require("../middlewares/validations");
 const reviewModels = require("../models/reviewModels")
-=======
-
->>>>>>> 8ae1cec (createReview validation not proper work)
 
 
 
-<<<<<<< HEAD
+
+
+
+
 const updateReview = async function (req, res) {
     try {
         let reviewId = req.params.reviewId
@@ -87,6 +87,5 @@ const deleteReview = async function (req, res) {
 }
 
 module.exports = { createReview, updateReview ,deleteReview}
-=======
-module.exports={createReview}
->>>>>>> 8ae1cec (createReview validation not proper work)
+
+
