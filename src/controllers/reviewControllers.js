@@ -1,13 +1,50 @@
  
-const { isValidObjectId, isPresent, isValidRating, isValidName } = require("../middlewares/validations");
+const { isValidObjectId,isValidDate, isPresent, isValidRating, isValidName } = require("../middlewares/validations");
 const reviewModels = require("../models/reviewModels")
+const bookModels = require("../models/bookModels");
 
+const createReview= async function(req,res) {
+    try {
+        let data = req.params.bookId
+        let bodyData=req.body
 
+        let createData= {}
+        const {reviewedBy,reviewedAt,rating,review,isDeleted} = req.body
+        if (!data && !bodyData) return res.status(400).send({ status: false, message: "please provide review information" })
+        if (!data) return res.status(400).send({ status: false, message: "please provide book id in params" })
+        createData.bookId=data
+        if (!bodyData) return res.status(400).send({ status: false, message: "please provide review information in body" })
+        if (!isValidObjectId(data)) return res.status(400).send({ status: false, message: "bookId is not Correct" })
+        let id = await bookModels.findById(data)
+        if (!id) return res.status(404).send({ status: false, message: "book not found" })
+        if (id.isDeleted == true) return res.status(400).send({ status: false, message: "the given book id data deleted So can't create review" })
+        
+        if(reviewedBy)
+        createData.reviewedBy=reviewedBy
 
+        if (!reviewedAt) return res.status(400).send({ status: false, message: "Please enter reviewed date" })
+        if (!isValidDate(reviewedAt)) return res.status(400).send({ status: false, message: "Date format should be in (YYYY-MM-DD)" })
+        createData.reviewedAt=reviewedAt
 
+        if (!rating) return res.status(400).send({ status: false, message: "Please enter rating" })
+        // let ratingRegex= /^.{1,5}$/
+        // if (!rating.match(ratingRegex))
+        // return res.status(400).send({ status: false, msg: "rating should be minimum 1 and maximum 5 number" })
+        createData.rating=rating
 
+        if(review)
+        createData.review=review
 
+        if(isDeleted)
+        createData.isDeleted=isDeleted
 
+        let reviewData = await reviewModels.create(createData)
+
+        return res.status(201).send({ status: true, message: "Success", Data: reviewData })
+    } catch (err) {
+        return res.status(500).send({ status: false, message: err.message });
+    }
+}
 const updateReview = async function (req, res) {
     try {
         let reviewId = req.params.reviewId
