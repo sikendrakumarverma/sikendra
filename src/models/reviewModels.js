@@ -13,7 +13,7 @@ const reviewSchema = new mongoose.Schema({
         default: 'Guest'
     },
     reviewedAt: {
-        type: Date,
+        type: String,
         required: true
     },
     rating: {
@@ -31,7 +31,7 @@ const reviewSchema = new mongoose.Schema({
         default: false
     },
     deletedAt: {
-        type: Date
+        type: String
     }
 },{timestamps:true})
 

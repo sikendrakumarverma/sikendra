@@ -51,7 +51,8 @@ const isValidDate = function (date) {
 }
 
 const isValidRating = function isInteger(value) {
-    return value % 1 == 0;
+    if (value % 1 == 0 && value>=1 && value<=5) return true;
+    return false;
 }
 
 

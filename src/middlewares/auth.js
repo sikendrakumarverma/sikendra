@@ -7,12 +7,15 @@ const authenticate = function (req, res, next) {
   try {
     let token = req.headers[`x-api-key`];
     if (!token) return res.status(400).send({ status: false, message: "Please set token in header" });
-    let decodedToken = jwt.verify(token, "Project_3 books-management", function (error, done) {
+    let decodedToken = jwt.verify(token, "Project_3 books-management",{ignoreExpiration:true}, function (error, done) {
       if (error) {
-        return res.status(400).send({ status: false, message: "Token is Expired, Please relogin or may be token is not valid" });
+        return res.status(400).send({ status: false, message: "Token is Invalid" });
       }
       return done;
     })
+
+    if(decodedToken.exp < Date.now()/1000) return res.status(400).send({ status: false, message: "Token is Expired, Please relogin" });
+
     req.decodedToken = decodedToken.userId
     next()
   } catch (error) {
