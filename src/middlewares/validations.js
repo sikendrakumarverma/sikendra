@@ -6,11 +6,6 @@ const isPresent = function (value) {
     return true
 }
 
-const isValidString = function (value) {
-    if (typeof value === 'string' && value.trim().length === 0) return false
-    return true
-}
-
 const isValidName = function (name) {
     const nameRegex = /^[a-zA-Z ]{2,30}$/
     return nameRegex.test(name)
@@ -59,7 +54,6 @@ const isValidRating = function isInteger(value) {
 
 module.exports = {
     isValidName,
-    isValidString,
     isValidTitle,
     isValidPhone,
     isValidISBN,
