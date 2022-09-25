@@ -31,8 +31,9 @@ const createReview = async function (req, res) {
         data.reviewedAt = Date();
 
         let reviewData = await reviewModels.create(data)
+        await bookModels.updateOne({ _id: bookId}, { $inc: { reviews: 1 } })
 
-        return res.status(201).send({ status: true, message: "Success", Data: reviewData })
+        return res.status(201).send({ status: true, message: "Success", data: {reviewsData:reviewData} })
     } catch (err) {
         return res.status(500).send({ status: false, message: err.message });
     }

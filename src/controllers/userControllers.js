@@ -43,7 +43,7 @@ const createUsers = async function (req, res) {
         if (address) {
             if (address.pincode) {
                 if (! /^\+?([1-9]{1})\)?([0-9]{5})$/.test(address.pincode)) {
-                    return res.status(400).send({ status: false, message: "invalid pin" })
+                    return res.status(400).send({ status: false, message: "invalid pincode" })
                 }
             }
         }
@@ -80,8 +80,8 @@ const login = async function (req, res) {
         if (!user) {
             return res.status(400).send({ status: false, message: "User not found" })
         }
-        let token = jwt.sign({ email: user.email, password: user.password, userId: user["_id"] }, "Project_3 books-management", { expiresIn: "10m" })
-        return res.status(400).send({ status: true, message: "Success", Data: { token: token } })
+        let token = jwt.sign({ userId: user["_id"] }, "Project_3 books-management", { expiresIn: "10m" })
+        return res.status(200).send({ status: true, message: "Success", data: { token: token } })
     } catch (error) {
         return res.status(500).send({ status: false, message: error.message })
     }
