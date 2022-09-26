@@ -26,7 +26,7 @@ const isValidEmail = function (email) {
 }
 
 const isValidPassword = function (password) {
-    var passRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    var passRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,15})");
     return passRegex.test(password)
 }
 

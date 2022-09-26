@@ -78,7 +78,7 @@ const login = async function (req, res) {
         }
         let user = await userModel.findOne(req.body);
         if (!user) {
-            return res.status(400).send({ status: false, message: "User not found" })
+            return res.status(404).send({ status: false, message: "User not found" })
         }
         let token = jwt.sign({ userId: user["_id"] }, "Project_3 books-management", { expiresIn: "10m" })
         return res.status(200).send({ status: true, message: "Success", data: { token: token } })

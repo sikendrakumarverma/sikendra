@@ -35,7 +35,7 @@ const authorize = async function (req, res, next) {
       if (!paramBookId) return res.status(400).send({ status: false, message: "Please enter bookId in params" })
       if (!isValidObjectId(paramBookId)) return res.status(400).send({ status: false, message: "bookId is not correct" });
       let checkUser = await bookModels.findById(paramBookId)
-      if (!checkUser) return res.status(400).send({ status: false, message: "Book is not found" });
+      if (!checkUser) return res.status(404).send({ status: false, message: "Book is not found" });
       if (checkUser.userId != loggedUserId) return res.status(400).send({ status: false, message: "Login user is not allowed to change the data of another user" });
     }
     else {
@@ -45,7 +45,7 @@ const authorize = async function (req, res, next) {
       if (!isPresent(bodyUserId)) return res.status(400).send({ status: false, message: "Please enter UserID" })
       if (!isValidObjectId(bodyUserId)) return res.status(400).send({ status: false, message: "UserId is not correct" });
       let checkUser = await userModels.findById(bodyUserId)
-      if (!checkUser) return res.status(400).send({ status: false, message: "User is not found" });
+      if (!checkUser) return res.status(404).send({ status: false, message: "User is not found" });
       if (checkUser._id != loggedUserId) return res.status(400).send({ status: false, message: "Login user is not allowed to create the data of another user" });
     } 
     next()
