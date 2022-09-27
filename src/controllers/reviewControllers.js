@@ -1,4 +1,4 @@
-const { isValidObjectId, isPresent, isValidRating, isValidName } = require("../middlewares/validations");
+const { isValidObjectId,isValidDate, isPresent, isValidRating, isValidName } = require("../middlewares/validations");
 const reviewModels = require("../models/reviewModels")
 const bookModels = require("../models/bookModels");
 
@@ -30,8 +30,7 @@ const createReview = async function (req, res) {
         if (!reviewedBy) data.reviewedBy = 'Guest';
 
         if (reviewedAt) {
-            if (!isValidName(reviewedAt)) return res.status(400).send({ status: false, message: "reviewer name should be in alphabets" })
-            if (!isValidDate(reviewedAt)) return res.status(400).send({ status: false, message: "Date format should be in (YYYY-MM-DD)" })
+           if (!isValidDate(reviewedAt)) return res.status(400).send({ status: false, message: "Date format should be in (YYYY-MM-DD)" })
             data.reviewedAt = reviewedAt;
         }
         if (!reviewedAt) data.reviewedAt = Date();

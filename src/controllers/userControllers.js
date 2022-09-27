@@ -83,7 +83,7 @@ const login = async function (req, res) {
         //let expiration = '7d'
         let token = jwt.sign({ userId: user["_id"] }, "Project_3 books-management", { expiresIn: "10m" })
 
-        res.headers("x-api-key", token);
+        //res.headers("x-api-key", token);
         // let tokenData = {
         //     token: token,
         //     userId: user._id,
