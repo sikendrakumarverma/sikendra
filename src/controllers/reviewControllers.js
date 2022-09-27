@@ -5,7 +5,7 @@ const bookModels = require("../models/bookModels");
 const createReview = async function (req, res) {
     try {
         let bookId = req.params.bookId
-        const { reviewedBy, rating, review } = req.body
+        const { reviewedBy,reviewedAt, rating, review } = req.body
 
         if (Object.entries(req.body).length == 0) return res.status(400).send({ status: false, message: "please provide review information" })
         if (!bookId) return res.status(400).send({ status: false, message: "please provide book id in params" })
@@ -28,7 +28,13 @@ const createReview = async function (req, res) {
             data.reviewedBy = reviewedBy;
         }
         if (!reviewedBy) data.reviewedBy = 'Guest';
-        data.reviewedAt = Date();
+
+        if (reviewedAt) {
+            if (!isValidName(reviewedAt)) return res.status(400).send({ status: false, message: "reviewer name should be in alphabets" })
+            if (!isValidDate(reviewedAt)) return res.status(400).send({ status: false, message: "Date format should be in (YYYY-MM-DD)" })
+            data.reviewedAt = reviewedAt;
+        }
+        if (!reviewedAt) data.reviewedAt = Date();
 
         let reviewData = await reviewModels.create(data)
         await bookModels.updateOne({ _id: bookId}, { $inc: { reviews: 1 } })

@@ -1,7 +1,7 @@
 const userModel = require("../models/userModels")
 const { isPresent, isValidEmail, isValidPassword, isValidName, isValidPhone, isValidTitle } = require("../middlewares/validations")
 const jwt = require('jsonwebtoken');
-
+//const moment = require('moment')
 const createUsers = async function (req, res) {
     try {
         let data = req.body;
@@ -80,7 +80,16 @@ const login = async function (req, res) {
         if (!user) {
             return res.status(404).send({ status: false, message: "User not found" })
         }
+        //let expiration = '7d'
         let token = jwt.sign({ userId: user["_id"] }, "Project_3 books-management", { expiresIn: "10m" })
+
+        res.headers("x-api-key", token);
+        // let tokenData = {
+        //     token: token,
+        //     userId: user._id,
+        //     iat: moment(),
+        //     exp: expiration
+        // }
         return res.status(200).send({ status: true, message: "Success", data: { token: token } })
     } catch (error) {
         return res.status(500).send({ status: false, message: error.message })
