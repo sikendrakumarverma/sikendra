@@ -12,7 +12,7 @@ router.post("/register", createUsers);
 router.post("/login", login)
 
 //-----------Book Api's----------//
-router.post("/books", authenticate,authorize, createBooks)
+router.post("/books",authenticate, authorize, createBooks)
 router.get("/books", authenticate, getBooks)
 router.get("/books/:bookId", authenticate, authorize, getBookById)
 router.put("/books/:bookId", authenticate, authorize, updateBook)
