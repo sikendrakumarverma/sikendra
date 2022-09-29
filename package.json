@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongoose": "^6.6.2",
+    "nodemon": "^2.0.20",
+    "short-id": "^0.1.0-1",
+    "shortid": "^2.2.16",
+    "valid-url": "^1.0.9"
+  },
+  "name": "urlshortnerproject4_group57",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sikendrakumarverma/urlShortnerProject4_Group57.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sikendrakumarverma/urlShortnerProject4_Group57/issues"
+  },
+  "homepage": "https://github.com/sikendrakumarverma/urlShortnerProject4_Group57#readme"
+}
