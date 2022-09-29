@@ -14,8 +14,4 @@ const isValidRequestBody = function (requestBody) {
   return Object.keys(requestBody).length > 0;
 };
 
-module.exports = {
-  validateUrl,
-  isValid,
-  isValidRequestBody,
-}
+module.exports = {validateUrl,isValid,isValidRequestBody,}

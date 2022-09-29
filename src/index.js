@@ -5,8 +5,7 @@ const route = require("./routes/route")
 
 app.use(express.json())
 
-mongoose.connect(
-    "mongodb+srv://sikendrakumar:wtCKMS5cQpIjdBOE@cluster0.oexuw0b.mongodb.net/group57Database",
+mongoose.connect("mongodb+srv://sikendrakumar:wtCKMS5cQpIjdBOE@cluster0.oexuw0b.mongodb.net/group57Database",
     {useNewUrlParser:true}
 ).then(()=>console.log("mongoDb is connected"))
     .catch((err)=>console.log(err))
@@ -14,12 +13,7 @@ mongoose.connect(
 app.use("/",route)
 
 app.use("/*", function (req, res) {
-    res
-      .status(400)
-      .send({
-        status: false,
-        message: "Please Enter Valid Path Or Parameters !!!!",
-      });
+    return res.status(400).send({status: false,message: "Please Enter Valid Path Or Parameters !!!!",});
   });
   
 
