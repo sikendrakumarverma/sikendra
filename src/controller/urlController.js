@@ -37,7 +37,7 @@ const createShortUrl = async function (req, res) {
         // creating short url
         const newShortUrl = await urlModel.create( data)
 
-        return res.status(201).send({ status: true, data: data })
+        return res.status(201).send({ status: true,message:"shorten url successfully created" ,data: data })
     }
     catch (err) {
         return res.status(500).send({ status: false, message: err.message })
