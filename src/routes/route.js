@@ -2,9 +2,10 @@ const express = require("express")
 const router = express.Router()
 const url = require("../controller/urlController")
 
-router.get("/test-me", function(req,res){
-    res.send("api running")
-})
+router.post("/test-me", url.createInCachine )
+router.get("/get-catchine", url.getCachine )
+router.put("/delete",url.deleteCatche)
+
 
 router.post("/url/shorten", url.createShortUrl)
 
